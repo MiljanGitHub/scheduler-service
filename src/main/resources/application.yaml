@@ -11,9 +11,9 @@ spring:
         connection:
           charSet: UTF-8
         hbm2ddl:
-          #import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+          import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
     hibernate:
-      naming_stratgey=org.hibernate: org.hibernate.cfg.EJB3NamingStrategy
+      naming_stratgey: org.hibernate.cfg.EJB3NamingStrategy
       #ddl-auto: create
       #ddl-auto: update
       ddl-auto: create-drop

@@ -23,14 +23,29 @@ import java.util.List;
                 classes = {@ConstructorResult(targetClass=com.uns.ac.rs.schedulerservice.dto.response.CourtInfo.class,
                 columns = {@ColumnResult(name="id", type=Integer.class),
                            @ColumnResult(name="name", type=String.class)
-                        })} )
+                        })} ),
+        @SqlResultSetMapping(name = "findCourtReservationInfoMapping",
+                classes = {@ConstructorResult(targetClass=com.uns.ac.rs.schedulerservice.dto.response.CourtData.class,
+                columns = {@ColumnResult(name="courtId", type=Integer.class),
+                           @ColumnResult(name="courtName", type=String.class),
+                           @ColumnResult(name="reservationId", type=Integer.class),
+                           @ColumnResult(name="start", type=String.class),
+                           @ColumnResult(name="end", type=String.class)
+                          })} )
 })
 @NamedNativeQueries(value = {
 
         @NamedNativeQuery(name = "findAllCourtsInfo",
-                          query = "SELECT c.court_id AS id, c.name AS name FROM Courts c",
-                          resultSetMapping = "findCourtInfoMapping")
+                query = "SELECT c.court_id AS id, c.name AS name FROM Courts c",
+                resultSetMapping = "findCourtInfoMapping"),
 
+        @NamedNativeQuery(name = "findCourtReservationInfo",
+                query = "SELECT c.court_id AS courtId, c.name AS courtName, reservations.reservation_id as reservationId, reservations.start AS start, reservations.end AS end " +
+                        "FROM courts c " +
+                        "LEFT JOIN reservations ON reservations.court_id " +
+                        "WHERE c.court_id = reservations.court_id AND c.court_id = :courtId AND reservations.start + 0 >= :now " +
+                        "ORDER BY reservations.start + 0 ASC;",
+                resultSetMapping = "findCourtReservationInfoMapping")
 })
 //@NamedQuery(name = "Courts.findAll", query = "SELECT * FROM Courts c")
 public class Court {

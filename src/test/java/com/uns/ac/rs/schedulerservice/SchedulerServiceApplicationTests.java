@@ -3,10 +3,10 @@ package com.uns.ac.rs.schedulerservice;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class SchedulerServiceApplicationTests {
 
-	@Test
+	//@Test
 	void contextLoads() {
 	}
 
