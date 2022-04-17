@@ -13,6 +13,9 @@
 	<name>scheduler-service</name>
 	<description>Scheduler microservice</description>
 
+	<properties>
+		<resource.delimiter>^</resource.delimiter>
+	</properties>
 
 	<dependencies>
 		<dependency>

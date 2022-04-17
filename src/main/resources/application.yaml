@@ -1,0 +1,42 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  jpa:
+    properties:
+      database-platform: com.uns.ac.rs.schedulerservice.configuration.ImprovedMySQLDialect
+      hibernate:
+        dialect: com.uns.ac.rs.schedulerservice.configuration.ImprovedMySQLDialect
+          #storage_engine: innodb
+        connection:
+          charSet: UTF-8
+        hbm2ddl:
+          #import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+    hibernate:
+      naming_stratgey=org.hibernate: org.hibernate.cfg.EJB3NamingStrategy
+      #ddl-auto: create
+      #ddl-auto: update
+      ddl-auto: create-drop
+    show_sql: true
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/scheduler?allowPublicKeyRetrieval=true&useSSL=false
+    initialization-mode: never
+#    initialization-mode: always
+
+springfox:
+  documentation:
+    swagger-ui:
+      baseUrl: scheduler-service
+
+swagger:
+    title: ^project.name^
+    description: ^project.description^
+    version: ^project.version^
+    termsOfServiceUrl: \#
+    contactName: Miljan Puletic
+    contactUrl: \#
+    contactEmail: miljan.puletic@email.com
+    license: License of API
+    licenseUrl: \#

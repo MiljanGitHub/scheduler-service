@@ -1,17 +1,38 @@
 package com.uns.ac.rs.schedulerservice.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Entity
 @SuperBuilder
 @NoArgsConstructor
-@Entity
+@AllArgsConstructor
 @Table(name = "courts")
+
+@SqlResultSetMappings({
+
+
+        @SqlResultSetMapping(name = "findCourtInfoMapping",
+                classes = {@ConstructorResult(targetClass=com.uns.ac.rs.schedulerservice.dto.response.CourtInfo.class,
+                columns = {@ColumnResult(name="id", type=Integer.class),
+                           @ColumnResult(name="name", type=String.class)
+                        })} )
+})
+@NamedNativeQueries(value = {
+
+        @NamedNativeQuery(name = "findAllCourtsInfo",
+                          query = "SELECT c.court_id, c.name FROM Court ",
+                          resultSetMapping = "findCourtInfoMapping")
+
+})
+//@NamedQuery(name = "Courts.findAll", query = "SELECT * FROM Courts c")
 public class Court {
 
     @Id
@@ -28,6 +49,11 @@ public class Court {
     @Column(name = "_active")
     private boolean active;
 
-    @OneToMany(mappedBy = "court", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Reservation> reservations;
+    //@Column(name = "_type")
+    //private String type;
+
+    //private byte[] image;
+
+    @OneToMany(mappedBy = "court") //, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true
+    private List<Reservation> reservations = new ArrayList<>();
 }

@@ -1,19 +1,18 @@
 package com.uns.ac.rs.schedulerservice.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.Type;
-
+import lombok.Data;
 import javax.persistence.*;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import org.hibernate.annotations.Type;
+import lombok.experimental.SuperBuilder;
 
-@Getter
-@Setter
+@Data
+@Entity
 @SuperBuilder
 @NoArgsConstructor
-@Entity
-@Table(name = "reservation")
+@AllArgsConstructor
+@Table(name = "reservations")
 public class Reservation {
 
     @Id
@@ -28,7 +27,7 @@ public class Reservation {
     private String end;
 
     @ManyToOne
-    @JoinColumn(name = "court_id", referencedColumnName = "court_id", nullable = true)
+    @JoinColumn(name="court_id", nullable = false)
     private Court court;
 
     @Column(name = "user_id", unique = false, nullable = true)
