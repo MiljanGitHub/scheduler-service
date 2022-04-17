@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ValidatorD extends Validator{
     @Override
-    public List<String> handle(ReservationRequest reservationRequest) {
+    public String handle(ReservationRequest reservationRequest) {
         //ValidatorB -> Payment Service (if user has card data and enough founds)
         return null;
     }

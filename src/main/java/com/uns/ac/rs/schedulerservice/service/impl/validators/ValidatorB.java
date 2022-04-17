@@ -15,7 +15,7 @@ public class ValidatorB extends Validator{
 
 
     @Override
-    public List<String> handle(ReservationRequest reservationRequest) {
+    public String handle(ReservationRequest reservationRequest) {
         //ValidatorB. -> Check business validation
         return null;
     }

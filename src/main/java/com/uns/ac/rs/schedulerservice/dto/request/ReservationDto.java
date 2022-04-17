@@ -9,6 +9,6 @@ import lombok.Data;
 public class ReservationDto {
 
     private PaymentMethod paymentMethod;
-    private String start;
-    private String end;
+    private Long start;
+    private Long end;
 }

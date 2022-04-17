@@ -46,6 +46,7 @@ public class SchedulerServiceImpl implements SchedulerService {
         //Notify admin by email
         //WebSocket
 
+
         final List<String> errors = validator.handle(object);
 
         return null;

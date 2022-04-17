@@ -16,7 +16,7 @@ public class ValidatorC extends Validator{
     private ReservationRepository reservationRepository;
 
     @Override
-    public List<String> handle(ReservationRequest reservationRequest) {
+    public String handle(ReservationRequest reservationRequest) {
         //ValidatorC -> Check (compare for no overlap) each requested timeslot with time slot in DB
         return null;
     }
