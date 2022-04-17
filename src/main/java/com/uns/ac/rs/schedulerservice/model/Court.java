@@ -28,7 +28,7 @@ import java.util.List;
 @NamedNativeQueries(value = {
 
         @NamedNativeQuery(name = "findAllCourtsInfo",
-                          query = "SELECT c.court_id, c.name FROM Court ",
+                          query = "SELECT c.court_id AS id, c.name AS name FROM Courts c",
                           resultSetMapping = "findCourtInfoMapping")
 
 })
