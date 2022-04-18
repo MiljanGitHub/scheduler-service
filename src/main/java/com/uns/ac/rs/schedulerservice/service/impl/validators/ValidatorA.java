@@ -47,7 +47,7 @@ public class ValidatorA extends Validator{
     }
 
     private String hasInvalidDate(ReservationRequest reservationRequest){
-        boolean invalidTime = reservationRequest.getReservationDtos().stream().filter(Objects::nonNull).anyMatch(reservationDto ->  reservationDto.getStart() <= 0 || reservationDto.getEnd() == 0);
+        boolean invalidTime = reservationRequest.getReservationDtos().stream().filter(Objects::nonNull).anyMatch(reservationDto ->  reservationDto.getStart() <= 0 || reservationDto.getEnd() <= 0);
         if(invalidTime) return "You must specify valid star end times";
         return null;
     }
@@ -91,12 +91,18 @@ public class ValidatorA extends Validator{
 
                 //check for overlaps of start* Dates;
 
+                if (hasOverlaps(startI, endI, startK, endK)) return "There must not be any overlaps between dates";
 
             }
-
-
         }
 
-        return null;
+        return checkNext(reservationRequest);
+    }
+
+    private boolean hasOverlaps(LocalDateTime startI, LocalDateTime endI, LocalDateTime startK, LocalDateTime endK){
+
+
+        return !(startI.isBefore(startK) && startI.isBefore(endK) && endI.isBefore(startK) && endI.isBefore(endK));
+
     }
 }
