@@ -16,7 +16,7 @@ import java.util.List;
 public class SchedulerServiceImpl implements SchedulerService {
 
     private final CourtRepository courtRepository;
-    private final Validator validator;
+    private final List<Validator> validators;
 
     @Override
     public List<CourtInfo> findAllCourtInfo() {
@@ -47,7 +47,7 @@ public class SchedulerServiceImpl implements SchedulerService {
         //WebSocket
 
 
-        final List<String> errors = validator.handle(object);
+        final String errors = validators.get(0).handle(object);
 
         return null;
     }

@@ -57,7 +57,6 @@ public class SwaggerFoxConfig {
     }
 
     private ApiInfo apiInfo() {
-        System.out.println(this.title);
         return new ApiInfo(
                 this.title,
                 this.description,

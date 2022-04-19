@@ -14,7 +14,7 @@ import java.util.List;
 public class ValidatorD extends Validator{
     @Override
     public String handle(ReservationRequest reservationRequest) {
-        //ValidatorB -> Payment Service (if user has card data and enough founds)
+        //ValidatorB -> Payment Service (if user has card data and enough founds) PaymentGateway
         return null;
     }
 }

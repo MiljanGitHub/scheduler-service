@@ -18,6 +18,14 @@ public class ValidatorC extends Validator{
     @Override
     public String handle(ReservationRequest reservationRequest) {
         //ValidatorC -> Check (compare for no overlap) each requested timeslot with time slot in DB
-        return null;
+
+
+        boolean overlappingTimeslotExists = reservationRequest.getReservationDtos().stream().anyMatch(
+                reservationDto -> !reservationRepository
+                        .findOverlappingReservations(reservationDto.getStart(), reservationDto.getEnd(), reservationRequest.getCourtId()).isEmpty());
+
+        if (overlappingTimeslotExists) return "There are already timeslots taken which overlap with one of your requested timeslots";
+
+        return checkNext(reservationRequest);
     }
 }

@@ -3,6 +3,7 @@ package com.uns.ac.rs.schedulerservice.service.impl.validators;
 import com.uns.ac.rs.schedulerservice.dto.request.ReservationDto;
 import com.uns.ac.rs.schedulerservice.dto.request.ReservationRequest;
 import lombok.NoArgsConstructor;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.TimeZone;
 
-@Order(1)
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @Component
 @NoArgsConstructor
 public class ValidatorA extends Validator{
@@ -35,6 +36,8 @@ public class ValidatorA extends Validator{
         String hasOverlapsMessage = hasOverlaps(reservationRequest);
         if (hasOverlapsMessage != null) return hasOverlapsMessage;
 
+        String notInFutureMessage = notInFuture(reservationRequest);
+        if (notInFutureMessage != null) return notInFutureMessage;
 
         return checkNext(reservationRequest);
     }
@@ -49,6 +52,13 @@ public class ValidatorA extends Validator{
     private String hasInvalidDate(ReservationRequest reservationRequest){
         boolean invalidTime = reservationRequest.getReservationDtos().stream().filter(Objects::nonNull).anyMatch(reservationDto ->  reservationDto.getStart() <= 0 || reservationDto.getEnd() <= 0);
         if(invalidTime) return "You must specify valid star end times";
+        return null;
+    }
+
+    private String notInFuture(ReservationRequest reservationRequest){
+        long now = System.currentTimeMillis();
+        boolean notInFuture = reservationRequest.getReservationDtos().stream().anyMatch(reservationDto -> now > reservationDto.getStart() || now > reservationDto.getEnd());
+        if (notInFuture) return "Each date must be in future";
         return null;
     }
 
@@ -101,8 +111,10 @@ public class ValidatorA extends Validator{
 
     private boolean hasOverlaps(LocalDateTime startI, LocalDateTime endI, LocalDateTime startK, LocalDateTime endK){
 
+        //to be tested
+        return !(startI.isBefore(startK) && startI.isBefore(endK) && endI.isBefore(startK) && endI.isBefore(endK)) ||
 
-        return !(startI.isBefore(startK) && startI.isBefore(endK) && endI.isBefore(startK) && endI.isBefore(endK));
+                (startK.isBefore(startI) && endK.isBefore(startI) && startK.isBefore(endI) && endK.isBefore(endI));
 
     }
 }

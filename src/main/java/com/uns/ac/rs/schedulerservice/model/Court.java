@@ -15,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "courts")
-
 @SqlResultSetMappings({
 
 
@@ -47,7 +46,6 @@ import java.util.List;
                         "ORDER BY reservations.start + 0 ASC;",
                 resultSetMapping = "findCourtReservationInfoMapping")
 })
-//@NamedQuery(name = "Courts.findAll", query = "SELECT * FROM Courts c")
 public class Court {
 
     @Id
