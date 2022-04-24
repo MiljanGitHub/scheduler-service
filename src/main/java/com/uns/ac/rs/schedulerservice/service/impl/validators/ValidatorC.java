@@ -1,6 +1,7 @@
 package com.uns.ac.rs.schedulerservice.service.impl.validators;
 
 import com.uns.ac.rs.schedulerservice.dto.request.ReservationRequest;
+import com.uns.ac.rs.schedulerservice.dto.response.BookingDto;
 import com.uns.ac.rs.schedulerservice.repository.ReservationRepository;
 import lombok.NoArgsConstructor;
 import org.springframework.core.annotation.Order;
@@ -16,7 +17,7 @@ public class ValidatorC extends Validator{
     private ReservationRepository reservationRepository;
 
     @Override
-    public String handle(ReservationRequest reservationRequest) {
+    public BookingDto handle(ReservationRequest reservationRequest) {
         //ValidatorC -> Check (compare for no overlap) each requested timeslot with time slot in DB
 
 
@@ -24,8 +25,12 @@ public class ValidatorC extends Validator{
                 reservationDto -> !reservationRepository
                         .findOverlappingReservations(reservationDto.getStart(), reservationDto.getEnd(), reservationRequest.getCourtId()).isEmpty());
 
-        if (overlappingTimeslotExists) return "There are already timeslots taken which overlap with one of your requested timeslots";
+        if (overlappingTimeslotExists) return errorResponse("There are already timeslots taken which overlap with one of your requested timeslots");
 
         return checkNext(reservationRequest);
+    }
+
+    private BookingDto errorResponse(String errorMessage){
+        return BookingDto.builder().hasErrorMessage(true).errorMessage(errorMessage).build();
     }
 }

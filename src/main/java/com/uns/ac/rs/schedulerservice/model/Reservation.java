@@ -30,7 +30,11 @@ public class Reservation {
     @JoinColumn(name="court_id", nullable = false)
     private Court court;
 
-    @Column(name = "user_id", unique = false, nullable = true)
+    @ManyToOne
+    @JoinColumn(name="payment_id", nullable = false)
+    private Payment payment;
+
+   /* @Column(name = "user_id", unique = false, nullable = true)
     private int userId;
 
     @Column(name = "paid", nullable = false)
@@ -44,5 +48,5 @@ public class Reservation {
     private String paidAt;
 
     @Enumerated(EnumType.STRING)
-    private PaymentMethod paymentMethod;
+    private PaymentMethod paymentMethod;*/
 }

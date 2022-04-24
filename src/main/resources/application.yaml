@@ -30,6 +30,11 @@ springfox:
     swagger-ui:
       baseUrl: scheduler-service
 
+stripe:
+  webhook:
+    secret: whsec_479271a8be1ce8a8841a3c15dbc248eaa44d26d1595d76dd7c3d8f6aca920c23
+  apiKey: sk_test_51KrplgL8U3BNM2iQy3cCNphQG7vMdewdLMd71f6AljjRRdu7GGJLI8pabmSrBIObbcLMSLIdBqgpP8JFdLr4fmim00qF1P1QZ2
+
 swagger:
     title: ^project.name^
     description: ^project.description^

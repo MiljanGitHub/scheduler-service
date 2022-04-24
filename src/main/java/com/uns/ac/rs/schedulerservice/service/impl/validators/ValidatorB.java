@@ -2,6 +2,7 @@ package com.uns.ac.rs.schedulerservice.service.impl.validators;
 
 import com.uns.ac.rs.schedulerservice.dto.request.ReservationDto;
 import com.uns.ac.rs.schedulerservice.dto.request.ReservationRequest;
+import com.uns.ac.rs.schedulerservice.dto.response.BookingDto;
 import lombok.NoArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -22,16 +23,20 @@ public class ValidatorB extends Validator{
     private static final EnumSet<DayOfWeek> WEEKEND_DAYS = EnumSet.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
 
     @Override
-    public String handle(ReservationRequest reservationRequest) {
+    public BookingDto handle(ReservationRequest reservationRequest) {
         //ValidatorB. -> Check business validation
 
 
         boolean hasInvalidReservationTime = reservationRequest.getReservationDtos().stream().anyMatch(reservationDto -> !workDayIsOK(reservationDto) || !weekendIsOK(reservationDto));
 
-        if (hasInvalidReservationTime) return "Each reservation must be made between 18h and 23h on work days and between 17h and 22h on weekends";
+        if (hasInvalidReservationTime) return errorResponse("Each reservation must be made between 18h and 23h on work days and between 17h and 22h on weekends");
 
 
         return checkNext(reservationRequest);
+    }
+
+    private BookingDto errorResponse(String errorMessage){
+        return BookingDto.builder().hasErrorMessage(true).errorMessage(errorMessage).build();
     }
 
     private boolean workDayIsOK(ReservationDto reservationDto){

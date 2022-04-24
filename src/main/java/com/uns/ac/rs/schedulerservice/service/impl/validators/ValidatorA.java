@@ -2,6 +2,7 @@ package com.uns.ac.rs.schedulerservice.service.impl.validators;
 
 import com.uns.ac.rs.schedulerservice.dto.request.ReservationDto;
 import com.uns.ac.rs.schedulerservice.dto.request.ReservationRequest;
+import com.uns.ac.rs.schedulerservice.dto.response.BookingDto;
 import lombok.NoArgsConstructor;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -20,26 +21,30 @@ public class ValidatorA extends Validator{
 
 
     @Override
-    public String handle(ReservationRequest reservationRequest) {
+    public BookingDto handle(ReservationRequest reservationRequest) {
 
         //ValidatorA. -> Check to see if requested timeslots are valid among them self's
 
         String invalidTimeslotMessage = hasInvalidTimeslot(reservationRequest);
-        if (invalidTimeslotMessage != null) return invalidTimeslotMessage;
+        if (invalidTimeslotMessage != null) return errorResponse(invalidTimeslotMessage);
 
         String hasInvalidDateMessage = hasInvalidDate(reservationRequest);
-        if (hasInvalidDateMessage != null) return hasInvalidDateMessage;
+        if (hasInvalidDateMessage != null) return errorResponse(hasInvalidDateMessage);
 
         String notInValidTimeslotRangeMessage = notInValidTimeslotRange(reservationRequest);
-        if(notInValidTimeslotRangeMessage != null) return notInValidTimeslotRangeMessage;
+        if(notInValidTimeslotRangeMessage != null) return errorResponse(notInValidTimeslotRangeMessage);
 
         String hasOverlapsMessage = hasOverlaps(reservationRequest);
-        if (hasOverlapsMessage != null) return hasOverlapsMessage;
+        if (hasOverlapsMessage != null) return errorResponse(hasOverlapsMessage);
 
         String notInFutureMessage = notInFuture(reservationRequest);
-        if (notInFutureMessage != null) return notInFutureMessage;
+        if (notInFutureMessage != null) return errorResponse(notInFutureMessage);
 
         return checkNext(reservationRequest);
+    }
+
+    private BookingDto errorResponse(String errorMessage){
+        return BookingDto.builder().hasErrorMessage(true).errorMessage(errorMessage).build();
     }
 
     private String hasInvalidTimeslot(ReservationRequest reservationRequest){
@@ -106,7 +111,7 @@ public class ValidatorA extends Validator{
             }
         }
 
-        return checkNext(reservationRequest);
+        return null;
     }
 
     private boolean hasOverlaps(LocalDateTime startI, LocalDateTime endI, LocalDateTime startK, LocalDateTime endK){

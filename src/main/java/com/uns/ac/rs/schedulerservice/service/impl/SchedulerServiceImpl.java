@@ -47,7 +47,7 @@ public class SchedulerServiceImpl implements SchedulerService {
         //WebSocket
 
 
-        final String errors = validators.get(0).handle(object);
+         validators.get(0).handle(object);
 
         return null;
     }
