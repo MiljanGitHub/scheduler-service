@@ -101,26 +101,29 @@ public class StripeController {
             stripeObject = dataObjectDeserializer.getObject().get();
         }
 
+        if (!(stripeObject instanceof PaymentIntent)) return ResponseEntity.ok(Optional.empty());
+
         PaymentIntent paymentIntent = (PaymentIntent) stripeObject;
         String intent = paymentIntent.getClientSecret();
         Payment payment = null;
         // Handle the event
         switch (event.getType()) {
             case "payment_intent.succeeded":
-                //nadji Payment gde je isti secret i gde nije confirmedByStripe
-                payment = paymentRepository.findFirst1ByPaymentIntentAndStripConfirmed(intent,false);
+                System.out.println("usao u: payment_intent.succeeded");
+/*                //nadji Payment gde je isti secret i gde nije confirmedByStripe
+               // payment = paymentRepository.findFirst1ByPaymentIntentAndStripConfirmed(intent,false);
 
                 if (payment != null){
-                    payment.setPaid(true); payment.setStripConfirmed(true);
-                    paymentRepository.save(payment);
+                    //payment.setPaid(true); payment.setStripConfirmed(true);
+                    //paymentRepository.save(payment);
                 }
 
-                //Use socket service to let know FE that payment is okay
+                //Use socket service to let know FE that payment is okay*/
 
                 break;
             case "charge.failed":
-
-                //nadji Payment gde je isti secret i gde nije confirmedByStripe
+                System.out.println("usao u: charge.failed");
+/*                //nadji Payment gde je isti secret i gde nije confirmedByStripe
                 payment = paymentRepository.findFirst1ByPaymentIntentAndStripConfirmed(intent,false);
 
                 if (payment != null){
@@ -130,7 +133,7 @@ public class StripeController {
 
                 //delete reservations:
                 assert payment != null;
-                reservationRepository.deleteAllInBatch(payment.getReservations());
+                reservationRepository.deleteAllInBatch(payment.getReservations());*/
 
                 //Use socket service to let know FE that payment is not succeeded
 
