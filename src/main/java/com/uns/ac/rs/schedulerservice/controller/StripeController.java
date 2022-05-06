@@ -37,6 +37,7 @@ public class StripeController {
     @PostMapping("/create-payment-intent")
     public CreatePaymentResponse createStripIntent(@RequestBody CreatePayment createPayment) {
 
+
         // This is a public sample test API key.
         // Don’t submit any personally identifiable information in requests made with this key.
         // Sign in to see your own test API key embedded in code samples.
@@ -47,13 +48,15 @@ public class StripeController {
             //CreatePayment postBody = gson.fromJson(request.body(), CreatePayment.class);
             PaymentIntentCreateParams params =
                     PaymentIntentCreateParams.builder()
-                            .setAmount(createPayment.getAmount())
+                            .setAmount(createPayment.getAmount()*100)
                             .setCurrency("eur")
-                            .setAutomaticPaymentMethods(
+                            .setPaymentMethod("pm_card_visa")
+                            //.setPaymentMethodOptions(PaymentIntentCreateParams.PaymentMethodOptions.builder()..build())
+                            /*.setAutomaticPaymentMethods(
                                     PaymentIntentCreateParams.AutomaticPaymentMethods
                                             .builder()
                                             .setEnabled(true)
-                                            .build())
+                                            .build())*/
                             .build();
 
             // Create a PaymentIntent with the order amount and currency
@@ -62,14 +65,9 @@ public class StripeController {
             return new CreatePaymentResponse(paymentIntent.getClientSecret());
 
         } catch (StripeException stripeException){
-
+            System.out.println(stripeException.getStripeError());
         }
-
-
-
-        //    return gson.toJson(paymentResponse);
-
-        return null;
+        throw new RuntimeException("Payment Intent creation occured");
     }
 
     @PostMapping("/stripe/events")
