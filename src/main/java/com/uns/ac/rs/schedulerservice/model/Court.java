@@ -67,6 +67,16 @@ public class Court {
 
     //private byte[] image;
 
+
+    @Column(name = "url", unique = false, nullable = true, columnDefinition = "varchar(500)")
+    private String url;
+
+    @Column(nullable = true)
+    private String objectName;
+
+    @Column(name = "mime_type", unique = false, nullable = true)
+    private String mimeType;
+
     @OneToMany(mappedBy = "court") //, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true
     private List<Reservation> reservations = new ArrayList<>();
 }
