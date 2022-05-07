@@ -21,7 +21,8 @@ import java.util.List;
         @SqlResultSetMapping(name = "findCourtInfoMapping",
                 classes = {@ConstructorResult(targetClass=com.uns.ac.rs.schedulerservice.dto.response.CourtInfo.class,
                 columns = {@ColumnResult(name="id", type=Integer.class),
-                           @ColumnResult(name="name", type=String.class)
+                           @ColumnResult(name="name", type=String.class),
+                           @ColumnResult(name="url", type=String.class)
                         })} ),
         @SqlResultSetMapping(name = "findCourtReservationInfoMapping",
                 classes = {@ConstructorResult(targetClass=com.uns.ac.rs.schedulerservice.dto.response.CourtData.class,
@@ -35,7 +36,7 @@ import java.util.List;
 @NamedNativeQueries(value = {
 
         @NamedNativeQuery(name = "findAllCourtsInfo",
-                query = "SELECT c.court_id AS id, c.name AS name FROM Courts c",
+                query = "SELECT c.court_id AS id, c.name AS name, c.url as url FROM Courts c",
                 resultSetMapping = "findCourtInfoMapping"),
 
         @NamedNativeQuery(name = "findCourtReservationInfo",
@@ -62,11 +63,14 @@ public class Court {
     @Column(name = "_active")
     private boolean active;
 
-    //@Column(name = "_type")
-    //private String type;
+    @Column(name = "_type")
+    private String type;
 
-    //private byte[] image;
+    @Column(name = "dimension")
+    private String dimension;
 
+    @Column(name = "covered")
+    private boolean covered;
 
     @Column(name = "url", unique = false, nullable = true, columnDefinition = "varchar(500)")
     private String url;

@@ -1,5 +1,10 @@
 --courts
---INSERT INTO `scheduler`.`courts` (`court_id`,`name`,`created`, `_active`) VALUES (1,'teren1' ,'1650113196417', 1);
+INSERT INTO `scheduler`.`courts` (`court_id`, `_active`, `covered`,`created`, `dimension`, `mime_type`, `name`, `object_name`,`_type`,`url`) VALUES (1,1,1,'1651906627659', '20x20', 'image/png', 'Blue court', '1651906627546_IfoRpDP.png', 'clay', 'http://127.0.0.1:9000/scheduler-bucket/1651906627546_IfoRpDP.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20220507%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20220507T065707Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=d93f9cfcdd2196d414faef4afa1d1d939fab63a9e8b6c9c0845ad25e11f4ed8c');
+INSERT INTO `scheduler`.`courts` (`court_id`, `_active`, `covered`,`created`, `dimension`, `mime_type`, `name`, `object_name`,`_type`,`url`) VALUES (2,1,1,'1651906627658', '24x24', 'image/png', 'Red court', '1651906627549_IfoRpDP.png', 'concrete', 'http://127.0.0.1:9000/scheduler-bucket/1651906627546_IfoRpDP.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20220507%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20220507T065707Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=d93f9cfcdd2196d414faef4afa1d1d939fab63a9e8b6c9c0845ad25e11f4ed8c');
+
+
+
+--INSERT INTO `scheduler`.`courts` (`court_id`, `_active`,`created`, `mime_type`, `name`, `object_name`,`url`) VALUES (2,1,'1651906627659', 'image/png', 'Red court', '1651906627546_IfoRpDP.png', 'http://127.0.0.1:9000/scheduler-bucket/1651906627546_IfoRpDP.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20220507%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20220507T065707Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=d93f9cfcdd2196d414faef4afa1d1d939fab63a9e8b6c9c0845ad25e11f4ed8c');
 
 --INSERT INTO `scheduler`.`reservations` (`reservation_id`, `end`, `paid`, `paid_at`, `payment`, `payment_method`, `start`, `user_id`, `court_id`)
 --VALUES (1, '1670947200000', 1, '123123', 123.33, 'CASH', '1670860800000', 1, 1);
