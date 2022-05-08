@@ -18,5 +18,5 @@ public interface CourtRepository extends JpaRepository<Court, Integer> {
     List<CourtInfo> findCourtInfoList();
 
     @Query(name = "findCourtReservationInfo", nativeQuery = true)
-    CourtData findReservationCourtInfoList(@Param("courtId") int courtId, long now);
+    List<CourtData> findReservationCourtInfoList(@Param("courtId") int courtId, long now);
 }

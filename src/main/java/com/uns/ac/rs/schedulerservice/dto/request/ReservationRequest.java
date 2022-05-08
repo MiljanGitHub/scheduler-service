@@ -1,6 +1,8 @@
 package com.uns.ac.rs.schedulerservice.dto.request;
 
-import com.stripe.model.PaymentMethod;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.uns.ac.rs.schedulerservice.model.PaymentMethod;
 import lombok.Builder;
 import lombok.Data;
 

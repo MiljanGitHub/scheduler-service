@@ -64,7 +64,7 @@ public class ValidatorD extends Validator{
                             .start(reservationDto.getStart().toString())
                             .end(reservationDto.getEnd().toString()).build()).collect(Collectors.toList()));
 
-            //TODO - websocket to inform about recently made reservations
+
 
             return BookingDto.builder().hasErrorMessage(false).clientSecret(paymentIntent).successMessage("Waiting for confirmation...").build();
 
@@ -85,8 +85,6 @@ public class ValidatorD extends Validator{
                             .court(court)
                             .start(reservationDto.getStart().toString())
                             .end(reservationDto.getEnd().toString()).build()).collect(Collectors.toList()));
-
-            //TODO - websocket to inform about recently made reservations
 
             return BookingDto.builder().hasErrorMessage(false).clientSecret(null).successMessage("You successfully placed your reservations.").build();
         }

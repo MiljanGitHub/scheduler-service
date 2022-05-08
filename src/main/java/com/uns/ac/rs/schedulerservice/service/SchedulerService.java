@@ -1,6 +1,7 @@
 package com.uns.ac.rs.schedulerservice.service;
 
 import com.uns.ac.rs.schedulerservice.dto.request.ReservationRequest;
+import com.uns.ac.rs.schedulerservice.dto.response.BookingDto;
 import com.uns.ac.rs.schedulerservice.dto.response.CourtData;
 import com.uns.ac.rs.schedulerservice.dto.response.CourtInfo;
 
@@ -12,5 +13,5 @@ public interface SchedulerService {
 
     CourtData findAllReservationCourtInfo(int courtId);
 
-    Object createReservations(ReservationRequest object);
+    BookingDto createReservations(ReservationRequest object);
 }

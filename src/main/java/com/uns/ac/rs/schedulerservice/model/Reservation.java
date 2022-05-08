@@ -13,6 +13,22 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "reservations")
+@SqlResultSetMappings({
+
+
+        @SqlResultSetMapping(name = "findByCourtMapping",
+                classes = {@ConstructorResult(targetClass=com.uns.ac.rs.schedulerservice.dto.response.ReservationDto.class,
+                columns = {@ColumnResult(name="reservationId", type=Integer.class),
+                           @ColumnResult(name="start", type=String.class),
+                           @ColumnResult(name="end", type=String.class)
+                        })} )
+})
+@NamedNativeQueries(value = {
+
+        @NamedNativeQuery(name = "findByCourt",
+                query = "select r.reservation_id as reservationId, r.start as start, r.end as end from reservations r where r.court_id = :courtId",
+                resultSetMapping = "findByCourtMapping")
+})
 public class Reservation {
 
     @Id
@@ -27,11 +43,11 @@ public class Reservation {
     private String end;
 
     @ManyToOne
-    @JoinColumn(name="court_id", nullable = false)
+    @JoinColumn(name="court_id", nullable = true)
     private Court court;
 
     @ManyToOne
-    @JoinColumn(name="payment_id", nullable = false)
+    @JoinColumn(name="payment_id", nullable = true)
     private Payment payment;
 
    /* @Column(name = "user_id", unique = false, nullable = true)

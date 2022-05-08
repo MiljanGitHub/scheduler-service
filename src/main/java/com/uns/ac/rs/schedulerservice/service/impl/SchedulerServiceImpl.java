@@ -1,15 +1,20 @@
 package com.uns.ac.rs.schedulerservice.service.impl;
 
 import com.uns.ac.rs.schedulerservice.dto.request.ReservationRequest;
+import com.uns.ac.rs.schedulerservice.dto.response.BookingDto;
 import com.uns.ac.rs.schedulerservice.dto.response.CourtData;
 import com.uns.ac.rs.schedulerservice.dto.response.CourtInfo;
+import com.uns.ac.rs.schedulerservice.dto.response.ReservationDto;
+import com.uns.ac.rs.schedulerservice.model.Court;
 import com.uns.ac.rs.schedulerservice.repository.CourtRepository;
+import com.uns.ac.rs.schedulerservice.repository.ReservationRepository;
 import com.uns.ac.rs.schedulerservice.service.SchedulerService;
 import com.uns.ac.rs.schedulerservice.service.impl.validators.Validator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -17,6 +22,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 
     private final CourtRepository courtRepository;
     private final List<Validator> validators;
+    private final ReservationRepository reservationRepository;
 
     @Override
     public List<CourtInfo> findAllCourtInfo() {
@@ -25,11 +31,21 @@ public class SchedulerServiceImpl implements SchedulerService {
 
     @Override
     public CourtData findAllReservationCourtInfo(int courtId) {
-        return courtRepository.findReservationCourtInfoList(courtId, System.currentTimeMillis());
+
+        Court court = courtRepository.getById(courtId);
+        List<ReservationDto> reservationDtos = reservationRepository.findByCourt(courtId);
+
+        return CourtData.builder().courtId(courtId)
+                .covered(court.isCovered())
+                .dimension(court.getDimension())
+                .name(court.getName())
+                .type(court.getType())
+                .url(court.getUrl())
+                .reservationCourtInfos(reservationDtos).build();
     }
 
     @Override
-    public Object createReservations(ReservationRequest object) {
+    public BookingDto createReservations(ReservationRequest reservationRequest) {
 
         //Cannot be empty
         //No more than 5 time slots (taken from config)
@@ -47,8 +63,9 @@ public class SchedulerServiceImpl implements SchedulerService {
         //WebSocket
 
 
-         validators.get(0).handle(object);
+        BookingDto handle = validators.get(0).handle(reservationRequest);
 
-        return null;
+
+        return handle;
     }
 }

@@ -1,25 +1,32 @@
 package com.uns.ac.rs.schedulerservice.dto.response;
 
-import com.uns.ac.rs.schedulerservice.model.Reservation;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Builder
 @AllArgsConstructor
 public class CourtData {
 
     private Integer courtId;
-    private String courtName;
-    //add more data to Court dimensions, type, price tag etc..
-    private List<ReservationCourtInfo> reservationCourtInfos;
+    private String name;
+    private String url;
+    private String dimension;
+    private String type;
+    private Boolean covered;
+    private List<ReservationDto> reservationCourtInfos;
 
-    public CourtData(Integer courtId, String courtName, Integer reservationId, String start, String end){
+    public CourtData(Integer courtId, String name, String url, String dimension,String type, Boolean covered, Integer reservationId, String start, String end){
         if(this.courtId == null) this.courtId = courtId;
-        if(this.courtName == null) this.courtName = courtName;
-        if (reservationCourtInfos == null)this.reservationCourtInfos = new ArrayList<>();
-        this.reservationCourtInfos.add(new ReservationCourtInfo(reservationId, start, end));
+        if(this.name == null) this.name = name;
+        if(this.url == null) this.url = url;
+        if(this.dimension == null) this.dimension = dimension;
+        if(this.type == null) this.type = type;
+        if(this.covered == null) this.covered = covered;
+
     }
 }

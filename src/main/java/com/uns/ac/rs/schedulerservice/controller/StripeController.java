@@ -114,13 +114,15 @@ public class StripeController {
                 if (payment != null){
                     //payment.setPaid(true); payment.setStripConfirmed(true);
                     //paymentRepository.save(payment);
+                    //Use socket service to let know FE that payment is okay
+                    //TODO - websocket to inform about recently made reservations
                 }
+*/
 
-                //Use socket service to let know FE that payment is okay*/
 
                 break;
             case "charge.failed":
-                System.out.println("usao u: charge.failed");
+                System.out.println("usao u: charge.failed"); //obrisi
 /*                //nadji Payment gde je isti secret i gde nije confirmedByStripe
                 payment = paymentRepository.findFirst1ByPaymentIntentAndStripConfirmed(intent,false);
 
