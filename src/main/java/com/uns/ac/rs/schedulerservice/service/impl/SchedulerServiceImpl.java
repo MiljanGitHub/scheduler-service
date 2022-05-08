@@ -33,7 +33,7 @@ public class SchedulerServiceImpl implements SchedulerService {
     public CourtData findAllReservationCourtInfo(int courtId) {
 
         Court court = courtRepository.getById(courtId);
-        List<ReservationDto> reservationDtos = reservationRepository.findByCourt(courtId);
+        List<ReservationDto> reservationDtos = reservationRepository.findByCourt(courtId, System.currentTimeMillis());
 
         return CourtData.builder().courtId(courtId)
                 .covered(court.isCovered())

@@ -45,14 +45,12 @@ public class ValidatorD extends Validator{
 
         if (paymentMethod.equals("CARD")){
 
-            String paymentIntent = initIntent(total);
-
             Payment newPayment = paymentRepository.save(Payment.builder()
                     .userId(reservationRequest.getUser())
                     .paid(false)
                     .payment(total)
-                    .paymentMethod(PaymentMethod.CASH)
-                    .paymentIntent(paymentIntent)
+                    .paymentMethod(PaymentMethod.CARD)
+                    .paymentIntent(reservationRequest.getPaymentIntent())
                     .stripConfirmed(false)
                     .build());
 
@@ -66,7 +64,7 @@ public class ValidatorD extends Validator{
 
 
 
-            return BookingDto.builder().hasErrorMessage(false).clientSecret(paymentIntent).successMessage("Waiting for confirmation...").build();
+            return BookingDto.builder().hasErrorMessage(false).successMessage("You successfully placed your reservations.").build();
 
         } else if (paymentMethod.equals("CASH")){
 
@@ -76,7 +74,7 @@ public class ValidatorD extends Validator{
                             .payment(total)
                             .paymentIntent(null)
                             .stripConfirmed(false)
-                            .paymentMethod(PaymentMethod.CARD).build());
+                            .paymentMethod(PaymentMethod.CASH).build());
 
             Court court = courtRepository.getById(reservationRequest.getCourtId());
 
@@ -86,7 +84,7 @@ public class ValidatorD extends Validator{
                             .start(reservationDto.getStart().toString())
                             .end(reservationDto.getEnd().toString()).build()).collect(Collectors.toList()));
 
-            return BookingDto.builder().hasErrorMessage(false).clientSecret(null).successMessage("You successfully placed your reservations.").build();
+            return BookingDto.builder().hasErrorMessage(false).successMessage("You successfully placed your reservations.").build();
         }
 
 
@@ -94,7 +92,7 @@ public class ValidatorD extends Validator{
     }
 
     private long calculatePayment(ReservationRequest reservationRequest){
-        return reservationRequest.getReservationDtos().size() == 1 ? 0 : (reservationRequest.getReservationDtos().size() - 1) * 10L;
+        return reservationRequest.getReservationDtos().size() == 1 ? 5 : (reservationRequest.getReservationDtos().size() - 1) * 10L + 5;
     }
 
     private String initIntent(Long amount){

@@ -20,11 +20,7 @@ public class ValidatorC extends Validator{
 
     @Override
     public BookingDto handle(ReservationRequest reservationRequest) {
-        //ValidatorC -> Check (compare for no overlap) each requested timeslot with time slot in DB
-
-        List<Integer> overlappingReservations = reservationRepository
-                .findOverlappingReservations(reservationRequest.getReservationDtos().get(0).getStart(), reservationRequest.getReservationDtos().get(0).getEnd(), reservationRequest.getCourtId());
-
+        //ValidatorC -> Check (compare for no overlap) each requested timeslot with time slot in D
 
         boolean overlappingTimeslotExists = reservationRequest.getReservationDtos().stream().anyMatch(
                 reservationDto -> !reservationRepository

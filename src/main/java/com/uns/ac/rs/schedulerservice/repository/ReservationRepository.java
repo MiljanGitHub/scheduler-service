@@ -22,7 +22,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     List<Integer> findOverlappingReservations(@Param("start") long start, @Param("end") long end, @Param("courtId") int courtId);
 
     @Query(name = "findByCourt", nativeQuery = true)
-    List<ReservationDto> findByCourt(@Param("courtId") int courtId);
+    List<ReservationDto> findByCourt(@Param("courtId") int courtId, @Param("now") long now);
 
 
 }

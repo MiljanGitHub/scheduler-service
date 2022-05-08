@@ -42,8 +42,8 @@ public class Payment {
     @Column(name = "payment", unique = false, nullable = false)
     private Long payment;
 
-    @Column(name = "paid_at", unique = false, nullable = true)
-    private String paidAt;
+    @Column(name = "confirmation", unique = false, nullable = true)
+    private String confirmation;
 
     @OneToMany(mappedBy = "payment") //, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true
     private List<Reservation> reservations;

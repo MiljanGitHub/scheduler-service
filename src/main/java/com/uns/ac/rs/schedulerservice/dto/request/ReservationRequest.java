@@ -1,7 +1,5 @@
 package com.uns.ac.rs.schedulerservice.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.uns.ac.rs.schedulerservice.model.PaymentMethod;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +12,7 @@ public class ReservationRequest {
 
     private Integer user;
     private Integer courtId;
+    private String paymentIntent;
     private PaymentMethod paymentMethod;
     private List<ReservationDto> reservationDtos;
 }

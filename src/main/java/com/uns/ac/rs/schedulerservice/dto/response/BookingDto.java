@@ -9,6 +9,5 @@ public class BookingDto {
 
     private boolean hasErrorMessage;
     private String errorMessage;
-    private String clientSecret;
     private String successMessage;
 }

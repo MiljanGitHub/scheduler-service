@@ -26,7 +26,7 @@ import lombok.experimental.SuperBuilder;
 @NamedNativeQueries(value = {
 
         @NamedNativeQuery(name = "findByCourt",
-                query = "select r.reservation_id as reservationId, r.start as start, r.end as end from reservations r where r.court_id = :courtId",
+                query = "select r.reservation_id as reservationId, r.start as start, r.end as end from reservations r where r.court_id = :courtId AND (r.start + 0) >= :now ORDER BY (r.start + 0) asc",
                 resultSetMapping = "findByCourtMapping")
 })
 public class Reservation {
