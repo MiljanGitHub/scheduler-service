@@ -21,13 +21,31 @@ import lombok.experimental.SuperBuilder;
                 columns = {@ColumnResult(name="reservationId", type=Integer.class),
                            @ColumnResult(name="start", type=String.class),
                            @ColumnResult(name="end", type=String.class)
+                        })} ),
+
+        @SqlResultSetMapping(name = "findReservationsByCourtAndUserMapping",
+                classes = {@ConstructorResult(targetClass=com.uns.ac.rs.schedulerservice.dto.response.ReservationByCourtAndUser.class,
+                        columns = {@ColumnResult(name="reservationId", type=Integer.class),
+                                   @ColumnResult(name="start", type=String.class),
+                                   @ColumnResult(name="end", type=String.class),
+                                   @ColumnResult(name="paymentType", type=String.class),
+                                   @ColumnResult(name="paid", type=Boolean.class)
                         })} )
+
 })
 @NamedNativeQueries(value = {
 
         @NamedNativeQuery(name = "findByCourt",
                 query = "select r.reservation_id as reservationId, r.start as start, r.end as end from reservations r where r.court_id = :courtId AND (r.start + 0) >= :now ORDER BY (r.start + 0) asc",
-                resultSetMapping = "findByCourtMapping")
+                resultSetMapping = "findByCourtMapping"),
+
+        @NamedNativeQuery(name = "findReservationsByCourtAndUser",
+                query = "SELECT r.reservation_id as reservationId, r.start as start, r.end as end, payment.payment_method as paymentType, payment.paid as paid " +
+                        "FROM reservations r " +
+                        "LEFT JOIN payment ON payment.payment_id " +
+                        "WHERE payment.user_id = :userId AND r.court_id = :courtId " +
+                        "ORDER BY r.start + 0 ASC;",
+                resultSetMapping = "findReservationsByCourtAndUserMapping")
 })
 public class Reservation {
 

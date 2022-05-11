@@ -1,10 +1,7 @@
 package com.uns.ac.rs.schedulerservice.service.impl;
 
 import com.uns.ac.rs.schedulerservice.dto.request.ReservationRequest;
-import com.uns.ac.rs.schedulerservice.dto.response.BookingDto;
-import com.uns.ac.rs.schedulerservice.dto.response.CourtData;
-import com.uns.ac.rs.schedulerservice.dto.response.CourtInfo;
-import com.uns.ac.rs.schedulerservice.dto.response.ReservationDto;
+import com.uns.ac.rs.schedulerservice.dto.response.*;
 import com.uns.ac.rs.schedulerservice.model.Court;
 import com.uns.ac.rs.schedulerservice.repository.CourtRepository;
 import com.uns.ac.rs.schedulerservice.repository.ReservationRepository;
@@ -67,5 +64,10 @@ public class SchedulerServiceImpl implements SchedulerService {
 
 
         return handle;
+    }
+
+    @Override
+    public List<ReservationByCourtAndUser> findReservationsByCourtAndUser(int userId, int courtId) {
+        return reservationRepository.findReservationsByCourtAndUser(courtId, userId);
     }
 }

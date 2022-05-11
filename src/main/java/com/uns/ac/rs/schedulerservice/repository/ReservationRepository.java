@@ -1,5 +1,6 @@
 package com.uns.ac.rs.schedulerservice.repository;
 
+import com.uns.ac.rs.schedulerservice.dto.response.ReservationByCourtAndUser;
 import com.uns.ac.rs.schedulerservice.dto.response.ReservationDto;
 import com.uns.ac.rs.schedulerservice.model.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,6 +24,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     @Query(name = "findByCourt", nativeQuery = true)
     List<ReservationDto> findByCourt(@Param("courtId") int courtId, @Param("now") long now);
+
+    @Query(name = "findReservationsByCourtAndUser", nativeQuery = true)
+    List<ReservationByCourtAndUser> findReservationsByCourtAndUser(@Param("courtId") int courtId, @Param("userId") int userId);
 
 
 }
