@@ -3,6 +3,7 @@ package com.uns.ac.rs.schedulerservice.service.impl;
 import com.uns.ac.rs.schedulerservice.dto.request.ReservationRequest;
 import com.uns.ac.rs.schedulerservice.dto.response.*;
 import com.uns.ac.rs.schedulerservice.model.Court;
+import com.uns.ac.rs.schedulerservice.model.Reservation;
 import com.uns.ac.rs.schedulerservice.repository.CourtRepository;
 import com.uns.ac.rs.schedulerservice.repository.ReservationRepository;
 import com.uns.ac.rs.schedulerservice.service.SchedulerService;
@@ -69,5 +70,18 @@ public class SchedulerServiceImpl implements SchedulerService {
     @Override
     public List<ReservationByCourtAndUser> findReservationsByCourtAndUser(int userId, int courtId) {
         return reservationRepository.findReservationsByCourtAndUser(courtId, userId);
+    }
+
+    @Override
+    public DeleteResponse deleteReservation(int reservationId) {
+
+        Optional<Reservation> byId = reservationRepository.findById(reservationId);
+        if (byId.isEmpty()) {
+            return DeleteResponse.builder().reason("Error deleting a reservation!").build();
+        }
+
+        reservationRepository.deleteById(reservationId);
+
+        return DeleteResponse.builder().reason("Successfully deleted reservation!").build();
     }
 }
