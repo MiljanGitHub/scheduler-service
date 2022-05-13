@@ -1,8 +1,11 @@
 package com.uns.ac.rs.schedulerservice.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.uns.ac.rs.schedulerservice.dto.request.ReservationRequest;
 import com.uns.ac.rs.schedulerservice.dto.response.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface SchedulerService {
@@ -16,4 +19,6 @@ public interface SchedulerService {
    List<ReservationByCourtAndUser>  findReservationsByCourtAndUser(int userId, int courtId);
 
     DeleteResponse deleteReservation(int reservationId);
+
+    CreateCourtResponse createCourt(MultipartFile multipartFile, String data) throws IOException;
 }

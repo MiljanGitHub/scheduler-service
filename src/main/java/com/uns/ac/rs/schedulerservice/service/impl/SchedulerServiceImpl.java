@@ -1,5 +1,8 @@
 package com.uns.ac.rs.schedulerservice.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uns.ac.rs.schedulerservice.dto.request.CourtNewDto;
 import com.uns.ac.rs.schedulerservice.dto.request.ReservationRequest;
 import com.uns.ac.rs.schedulerservice.dto.response.*;
 import com.uns.ac.rs.schedulerservice.model.Court;
@@ -9,18 +12,27 @@ import com.uns.ac.rs.schedulerservice.repository.ReservationRepository;
 import com.uns.ac.rs.schedulerservice.service.SchedulerService;
 import com.uns.ac.rs.schedulerservice.service.impl.validators.Validator;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SchedulerServiceImpl implements SchedulerService {
 
     private final CourtRepository courtRepository;
     private final List<Validator> validators;
     private final ReservationRepository reservationRepository;
+    private final ObjectMapper objectMapper;
+    private final MinioService minioService;
+
+    @Value("${minio.bucket.name}")
+    private String minioBucketAttachment;
 
     @Override
     public List<CourtInfo> findAllCourtInfo() {
@@ -83,5 +95,27 @@ public class SchedulerServiceImpl implements SchedulerService {
         reservationRepository.deleteById(reservationId);
 
         return DeleteResponse.builder().reason("Successfully deleted reservation!").build();
+    }
+
+    @Override
+    public CreateCourtResponse createCourt(MultipartFile multipartFile, String data) throws IOException {
+
+        CourtNewDto courtNewDto = objectMapper.readValue(data, CourtNewDto.class);
+        String objectName = System.currentTimeMillis() + "_" + multipartFile.getOriginalFilename();
+        Court c = Court.builder().covered(courtNewDto.getCovered()).dimension(courtNewDto.getDimension())
+                .name(courtNewDto.getName())
+                .mimeType(multipartFile.getContentType())
+                .objectName(objectName)
+                .type(courtNewDto.getType())
+                .active(true)
+                .url(minioService.save(multipartFile.getInputStream(), minioBucketAttachment, objectName, multipartFile.getOriginalFilename(), multipartFile.getContentType()))
+                .created(String.valueOf(System.currentTimeMillis())).build();
+
+
+        Court save = courtRepository.save(c);
+        if (save == null) CreateCourtResponse.builder().reason("Error on server!").build();
+
+
+        return CreateCourtResponse.builder().reason("Successfully created new Court").build();
     }
 }

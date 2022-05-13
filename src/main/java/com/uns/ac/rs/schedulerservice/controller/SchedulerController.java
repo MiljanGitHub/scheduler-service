@@ -1,5 +1,6 @@
 package com.uns.ac.rs.schedulerservice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.uns.ac.rs.schedulerservice.dto.request.ReservationRequest;
 import com.uns.ac.rs.schedulerservice.dto.request.UserAndCourtId;
 import com.uns.ac.rs.schedulerservice.dto.response.*;
@@ -10,7 +11,9 @@ import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -92,5 +95,12 @@ public class SchedulerController {
             })
     public ResponseEntity<DeleteResponse> deleteReservation(@PathVariable("reservationId") String reservationId){
         return ResponseEntity.ok(schedulerService.deleteReservation(Integer.parseInt(reservationId)));
+    }
+
+    @RequestMapping(value = "/court/create-new", consumes = {"multipart/form-data"}, method = RequestMethod.POST)
+    public ResponseEntity<CreateCourtResponse> createNewCourt(@RequestParam("file") MultipartFile attachment, @RequestParam("court") String courtRequest) throws IOException {
+
+        return ResponseEntity.ok(schedulerService.createCourt(attachment, courtRequest));
+
     }
 }
