@@ -125,8 +125,6 @@ public class SchedulerServiceImpl implements SchedulerService {
 
         Court c = courtRepository.getById(courtDto.getCourtId());
 
-       // c.setActive(); //TODO separate controller
-
         c.setCovered(courtDto.getCovered());
         c.setDimension(courtDto.getDimension());
         c.setName(courtDto.getName());

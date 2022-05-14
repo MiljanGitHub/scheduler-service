@@ -26,6 +26,9 @@ spring:
     url: jdbc:mysql://localhost:3306/scheduler?allowPublicKeyRetrieval=true&useSSL=false
 #    initialization-mode: never
     initialization-mode: always
+  artemis:
+    username: artemis
+    password: simetraehcapa
 
 springfox:
   documentation:

@@ -1,11 +1,15 @@
 package com.uns.ac.rs.schedulerservice.controller;
 
+import com.uns.ac.rs.schedulerservice.configuration.JmsConfig;
 import com.uns.ac.rs.schedulerservice.model.Court;
 import com.uns.ac.rs.schedulerservice.repository.CourtRepository;
 import com.uns.ac.rs.schedulerservice.service.impl.MinioService;
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +27,24 @@ public class MinioController {
 
     @Autowired
     private MinioService minioService;
+
+    @Autowired
+    private JmsTemplate jmsTemplate;
+
+    @Data
+    @Builder
+    class Student{
+        private String name;
+    }
+
+    @PostMapping("/test/{msg}")
+    public String artemis(@PathVariable("msg")String msg){
+
+        jmsTemplate.convertAndSend(JmsConfig.RESERVATIONS_QUEUE, Student.builder().name(msg).build());
+
+        return "OK";
+
+    }
 
     @RequestMapping(value = "/upload", consumes = {"multipart/form-data"}, method = RequestMethod.POST)
     public String uploadCourtImages(@RequestParam("file") MultipartFile multipartFile){
