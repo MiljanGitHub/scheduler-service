@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CreateCourtResponse {
+public class CourtResponse {
 
     private String reason;
 }

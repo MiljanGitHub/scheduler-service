@@ -5,11 +5,13 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CourtNewDto {
+public class CourtEditDto {
 
+    private Integer courtId;
     private String dimension;
     private String type;
     private Boolean covered;
     private String name;
     private String url;
+
 }

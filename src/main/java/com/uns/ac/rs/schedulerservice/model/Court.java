@@ -40,7 +40,7 @@ import java.util.List;
 @NamedNativeQueries(value = {
 
         @NamedNativeQuery(name = "findAllCourtsInfo",
-                query = "SELECT c.court_id AS id, c.name AS name, c.url as url FROM Courts c",
+                query = "SELECT c.court_id AS id, c.name AS name, c.url as url FROM Courts c WHERE c._active IS TRUE",
                 resultSetMapping = "findCourtInfoMapping"),
 
         @NamedNativeQuery(name = "findCourtReservationInfo",
@@ -85,6 +85,6 @@ public class Court {
     @Column(name = "mime_type", unique = false, nullable = true)
     private String mimeType;
 
-    @OneToMany(mappedBy = "court") //, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true
+    @OneToMany(mappedBy = "court")
     private List<Reservation> reservations = new ArrayList<>();
 }

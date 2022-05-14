@@ -1,7 +1,7 @@
 package com.uns.ac.rs.schedulerservice.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uns.ac.rs.schedulerservice.dto.request.CourtEditDto;
 import com.uns.ac.rs.schedulerservice.dto.request.CourtNewDto;
 import com.uns.ac.rs.schedulerservice.dto.request.ReservationRequest;
 import com.uns.ac.rs.schedulerservice.dto.response.*;
@@ -11,7 +11,6 @@ import com.uns.ac.rs.schedulerservice.repository.CourtRepository;
 import com.uns.ac.rs.schedulerservice.repository.ReservationRepository;
 import com.uns.ac.rs.schedulerservice.service.SchedulerService;
 import com.uns.ac.rs.schedulerservice.service.impl.validators.Validator;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -98,7 +97,7 @@ public class SchedulerServiceImpl implements SchedulerService {
     }
 
     @Override
-    public CreateCourtResponse createCourt(MultipartFile multipartFile, String data) throws IOException {
+    public CourtResponse createCourt(MultipartFile multipartFile, String data) throws IOException {
 
         CourtNewDto courtNewDto = objectMapper.readValue(data, CourtNewDto.class);
         String objectName = System.currentTimeMillis() + "_" + multipartFile.getOriginalFilename();
@@ -113,9 +112,52 @@ public class SchedulerServiceImpl implements SchedulerService {
 
 
         Court save = courtRepository.save(c);
-        if (save == null) CreateCourtResponse.builder().reason("Error on server!").build();
+        if (save == null) CourtResponse.builder().reason("Error on server!").build();
 
 
-        return CreateCourtResponse.builder().reason("Successfully created new Court").build();
+        return CourtResponse.builder().reason("Successfully created new Court").build();
+    }
+
+    @Override
+    public CourtResponse ediCourt(MultipartFile multipartFile, String data) throws IOException {
+
+        CourtEditDto courtDto = objectMapper.readValue(data, CourtEditDto.class);
+
+        Court c = courtRepository.getById(courtDto.getCourtId());
+
+       // c.setActive(); //TODO separate controller
+
+        c.setCovered(courtDto.getCovered());
+        c.setDimension(courtDto.getDimension());
+        c.setName(courtDto.getName());
+        c.setType(courtDto.getType());
+
+        if (courtDto.getUrl() == null && multipartFile != null){
+            String objectName = System.currentTimeMillis() + "_" + multipartFile.getOriginalFilename();
+            c.setMimeType(multipartFile.getContentType());
+            c.setObjectName(objectName);
+            c.setUrl(minioService.save(multipartFile.getInputStream(), minioBucketAttachment, objectName, multipartFile.getOriginalFilename(), multipartFile.getContentType()));
+        } else c.setUrl(courtDto.getUrl());
+
+        Court saved = courtRepository.save(c);
+        if (saved == null) CourtResponse.builder().reason("Error while editing server!").build();
+
+        return CourtResponse.builder().reason("Successfully edited Court").build();
+
+
+    }
+
+    @Override
+    public CourtResponse deactivateCourt(Integer courtId) {
+        Court court = courtRepository.getById(courtId);
+        long now = System.currentTimeMillis();
+        if (court.getReservations().stream().anyMatch(r -> Long.parseLong(r.getStart()) > now)){
+            return CourtResponse.builder().reason("At the moment you cannot deactivate this court since it has reservations in the future").build();
+        } else {
+            court.setActive(false);
+            courtRepository.save(court);
+        }
+
+        return CourtResponse.builder().reason("Court deactivated").build();
     }
 }
