@@ -1,9 +1,13 @@
 package com.uns.ac.rs.schedulerservice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.uns.ac.rs.schedulerservice.configuration.JmsConfig;
 import com.uns.ac.rs.schedulerservice.model.Court;
 import com.uns.ac.rs.schedulerservice.repository.CourtRepository;
 import com.uns.ac.rs.schedulerservice.service.impl.MinioService;
+import common.events.Student;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,17 +35,15 @@ public class MinioController {
     @Autowired
     private JmsTemplate jmsTemplate;
 
-    @Data
-    @Builder
-    class Student{
-        private String name;
-    }
+    @Autowired
+    private ObjectMapper objectMapper;
+
+
 
     @PostMapping("/test/{msg}")
-    public String artemis(@PathVariable("msg")String msg){
-
-        jmsTemplate.convertAndSend(JmsConfig.RESERVATIONS_QUEUE, Student.builder().name(msg).build());
-
+    public String artemis(@PathVariable("msg")String msg) throws JsonProcessingException {
+        Gson gson = new Gson();
+        jmsTemplate.convertAndSend(JmsConfig.RESERVATIONS_QUEUE, gson.toJson(new Student(msg)));
         return "OK";
 
     }
