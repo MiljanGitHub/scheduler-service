@@ -10,7 +10,7 @@ import org.springframework.jms.support.converter.MessageType;
 @Configuration
 public class JmsConfig {
 
-    public static final String RESERVATIONS_QUEUE = "reservations-queue";
+    public static final String PAYMENT_QUEUE = "payment-queue";
 
     @Bean // Serialize message content to json using TextMessage
     public MessageConverter jacksonJmsMessageConverter(ObjectMapper objectMapper) {

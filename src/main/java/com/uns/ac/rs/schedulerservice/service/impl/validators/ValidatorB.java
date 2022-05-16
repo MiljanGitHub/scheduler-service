@@ -41,11 +41,11 @@ public class ValidatorB extends Validator{
                 LocalDateTime.ofInstant(Instant.ofEpochMilli(reservationDto.getStart()),
                         TimeZone.getDefault().toZoneId());
         if (WORK_DAYS.contains(start.getDayOfWeek())){
-            if ( 18 < start.getHour() && 23 > start.getHour()){
+            if ( 18 > start.getHour()){
                 return "Each reservation must be made between 18h and 23h on work days and between 17h and 22h on weekends";
             }
         } else if (WEEKEND_DAYS.contains(start.getDayOfWeek())){
-            if (17 < start.getHour() && 22 > start.getHour()){
+            if (17 > start.getHour()){
                 return "Each reservation must be made between 18h and 23h on work days and between 17h and 22h on weekends";
             }
         }

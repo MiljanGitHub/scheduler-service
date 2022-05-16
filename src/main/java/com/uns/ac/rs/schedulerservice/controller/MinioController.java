@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.uns.ac.rs.schedulerservice.configuration.JmsConfig;
+import com.uns.ac.rs.schedulerservice.dto.response.UserNameDto;
 import com.uns.ac.rs.schedulerservice.model.Court;
 import com.uns.ac.rs.schedulerservice.repository.CourtRepository;
+import com.uns.ac.rs.schedulerservice.repository.FeignClientUserService;
 import com.uns.ac.rs.schedulerservice.service.impl.MinioService;
 import common.events.Student;
 import lombok.Builder;
@@ -38,12 +40,19 @@ public class MinioController {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private FeignClientUserService feignClientUserService;
+
+
 
 
     @PostMapping("/test/{msg}")
     public String artemis(@PathVariable("msg")String msg) throws JsonProcessingException {
         Gson gson = new Gson();
-        jmsTemplate.convertAndSend(JmsConfig.RESERVATIONS_QUEUE, gson.toJson(new Student(msg)));
+        //gson.toJson(new Student(msg))
+        jmsTemplate.convertAndSend(JmsConfig.PAYMENT_QUEUE , "1,2,3");
+        UserNameDto userNameDto = feignClientUserService.fetchUserData(2);
+        System.out.println(userNameDto);
         return "OK";
 
     }

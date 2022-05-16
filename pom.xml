@@ -15,13 +15,17 @@
 
 	<properties>
 		<resource.delimiter>^</resource.delimiter>
+		<!--<spring-cloud.version>2020.0.1</spring-cloud.version>-->
 	</properties>
 
 	<dependencies>
-		<dependency>
+
+
+	<!--	<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
-		</dependency>
+			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>-->
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -71,7 +75,6 @@
 		</dependency>
 
 	</dependencies>
-
 
 
 

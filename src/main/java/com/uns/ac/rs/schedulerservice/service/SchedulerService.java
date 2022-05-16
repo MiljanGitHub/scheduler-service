@@ -25,5 +25,7 @@ public interface SchedulerService {
 
     CourtResponse deactivateCourt(Integer courtId);
 
+    ReservationEventDto fetchReservationEventDto(Integer paymentId);
+
 
 }

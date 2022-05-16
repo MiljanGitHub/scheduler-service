@@ -6,8 +6,11 @@ import com.uns.ac.rs.schedulerservice.dto.request.CourtNewDto;
 import com.uns.ac.rs.schedulerservice.dto.request.ReservationRequest;
 import com.uns.ac.rs.schedulerservice.dto.response.*;
 import com.uns.ac.rs.schedulerservice.model.Court;
+import com.uns.ac.rs.schedulerservice.model.Payment;
 import com.uns.ac.rs.schedulerservice.model.Reservation;
 import com.uns.ac.rs.schedulerservice.repository.CourtRepository;
+import com.uns.ac.rs.schedulerservice.repository.FeignClientUserService;
+import com.uns.ac.rs.schedulerservice.repository.PaymentRepository;
 import com.uns.ac.rs.schedulerservice.repository.ReservationRepository;
 import com.uns.ac.rs.schedulerservice.service.SchedulerService;
 import com.uns.ac.rs.schedulerservice.service.impl.validators.Validator;
@@ -19,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +33,8 @@ public class SchedulerServiceImpl implements SchedulerService {
     private final ReservationRepository reservationRepository;
     private final ObjectMapper objectMapper;
     private final MinioService minioService;
+    private final PaymentRepository paymentRepository;
+    private final FeignClientUserService feignClientUserService;
 
     @Value("${minio.bucket.name}")
     private String minioBucketAttachment;
@@ -157,5 +163,27 @@ public class SchedulerServiceImpl implements SchedulerService {
         }
 
         return CourtResponse.builder().reason("Court deactivated").build();
+    }
+
+    @Override
+    public ReservationEventDto fetchReservationEventDto(Integer paymentId) {
+
+        Payment payment = paymentRepository.getById(paymentId);
+
+        List<Reservation> reservations = payment.getReservations();
+
+        List<ReservationDto> reservationDtos = reservations.stream().map(r ->
+                ReservationDto.builder().start(r.getStart()).end(r.getEnd()).reservationId(r.getId()).build())
+                .collect(Collectors.toList());
+
+        int courtId = reservations.get(0).getCourt().getId();
+
+        int userId = payment.getUserId();
+        UserNameDto userNameDto = feignClientUserService.fetchUserData(userId);
+
+        return ReservationEventDto.builder().reservationDtos(reservationDtos)
+                .courtId(courtId).userId(userId)
+                .username(userNameDto.getUsername()).build();
+
     }
 }

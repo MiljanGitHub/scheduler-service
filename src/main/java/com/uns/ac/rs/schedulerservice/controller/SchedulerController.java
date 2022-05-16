@@ -117,4 +117,20 @@ public class SchedulerController {
     public ResponseEntity<CourtResponse> deactivateCourt(@PathVariable("courtId") Integer courtId){
         return ResponseEntity.ok(schedulerService.deactivateCourt(courtId));
     }
+
+    @GetMapping("/reservation-event/{paymentId}")
+    @ApiOperation(value = "Get ReservationEventDto", notes = "Returns ReservationEventDto", response = ResponseEntity.class)
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 201, message = "Successfully created a new item"),
+                    @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+                    @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+                    @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
+                    @ApiResponse(code = 500, message = "Internal error")
+            })
+    public ResponseEntity<ReservationEventDto> fetchReservationEventDto(@PathVariable("paymentId")Integer paymentId){
+        return ResponseEntity.ok(schedulerService.fetchReservationEventDto(paymentId));
+    }
+
+
 }

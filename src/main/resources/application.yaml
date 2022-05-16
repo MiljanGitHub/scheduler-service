@@ -32,6 +32,9 @@ spring:
     port: 61616
     user: artemis
     password: simetraehcapa
+  cloud:
+    config:
+      enabled: false
 
 springfox:
   documentation:
@@ -42,6 +45,20 @@ stripe:
   webhook:
     secret: whsec_479271a8be1ce8a8841a3c15dbc248eaa44d26d1595d76dd7c3d8f6aca920c23
   apiKey: sk_test_51KrplgL8U3BNM2iQy3cCNphQG7vMdewdLMd71f6AljjRRdu7GGJLI8pabmSrBIObbcLMSLIdBqgpP8JFdLr4fmim00qF1P1QZ2
+
+feign-services:
+  user-service:
+    name: user-service
+    url: http://localhost:8081/api/user-service
+    path: /user
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 200000
+        readTimeout: 200000
+        loggerLevel: full
 
 
 minio:
