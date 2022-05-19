@@ -73,6 +73,9 @@ public class Court {
     @Column(name = "dimension")
     private String dimension;
 
+    @Column(name = "price")
+    private Integer price;
+
     @Column(name = "covered")
     private boolean covered;
 

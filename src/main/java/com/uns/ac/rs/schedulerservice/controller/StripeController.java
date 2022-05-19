@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
+@RequestMapping("/stripe")
 public class StripeController {
 
     @Value("${stripe.webhook.secret}")
@@ -69,7 +70,7 @@ public class StripeController {
         throw new RuntimeException("Payment Intent creation occurred");
     }
 
-    @PostMapping("/stripe/events")
+    @PostMapping("/events")
     public ResponseEntity<?> test(@RequestBody String payload,@RequestHeader("Stripe-Signature") String sigHeader ){
         Event event = null;
 
@@ -120,8 +121,7 @@ public class StripeController {
                               to query necessary services a make appropriate notifications on front-end, based on payment id.
                      */
 
-                    //Comma separated list of reservation IDs for a given Payment are being sent asynchronously
-                    //String reservationIds = payment.getReservations().stream().map(Reservation::getId).map(String::valueOf).collect(Collectors.joining(","));
+
                     System.out.println("treba da posalje: " + payment.getId());
                     jmsTemplate.convertAndSend(JmsConfig.PAYMENT_QUEUE, payment.getId());
                 }

@@ -16,6 +16,7 @@ public class CourtData {
     private String name;
     private String url;
     private String dimension;
+    private Integer price;
     private String type;
     private Boolean covered;
     private List<ReservationDto> reservationCourtInfos;

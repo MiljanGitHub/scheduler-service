@@ -35,6 +35,8 @@ spring:
   cloud:
     config:
       enabled: false
+  application:
+    name: scheduler-service
 
 springfox:
   documentation:

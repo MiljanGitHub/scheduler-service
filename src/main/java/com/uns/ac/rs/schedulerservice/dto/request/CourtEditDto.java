@@ -9,6 +9,7 @@ public class CourtEditDto {
 
     private Integer courtId;
     private String dimension;
+    private Integer price;
     private String type;
     private Boolean covered;
     private String name;

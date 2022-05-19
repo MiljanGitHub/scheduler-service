@@ -10,6 +10,7 @@ public class CourtNewDto {
     private String dimension;
     private String type;
     private Boolean covered;
+    private Integer price;
     private String name;
     private String url;
 }

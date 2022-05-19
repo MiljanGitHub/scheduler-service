@@ -53,6 +53,7 @@ public class SchedulerServiceImpl implements SchedulerService {
         return CourtData.builder().courtId(courtId)
                 .covered(court.isCovered())
                 .dimension(court.getDimension())
+                .price(court.getPrice())
                 .name(court.getName())
                 .type(court.getType())
                 .url(court.getUrl())
@@ -109,6 +110,7 @@ public class SchedulerServiceImpl implements SchedulerService {
         String objectName = System.currentTimeMillis() + "_" + multipartFile.getOriginalFilename();
         Court c = Court.builder().covered(courtNewDto.getCovered()).dimension(courtNewDto.getDimension())
                 .name(courtNewDto.getName())
+                .price(courtNewDto.getPrice())
                 .mimeType(multipartFile.getContentType())
                 .objectName(objectName)
                 .type(courtNewDto.getType())
@@ -135,6 +137,7 @@ public class SchedulerServiceImpl implements SchedulerService {
         c.setDimension(courtDto.getDimension());
         c.setName(courtDto.getName());
         c.setType(courtDto.getType());
+        c.setPrice(courtDto.getPrice());
 
         if (courtDto.getUrl() == null && multipartFile != null){
             String objectName = System.currentTimeMillis() + "_" + multipartFile.getOriginalFilename();
