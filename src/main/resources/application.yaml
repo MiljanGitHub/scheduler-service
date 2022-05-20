@@ -8,6 +8,7 @@ spring:
     properties:
       database-platform: com.uns.ac.rs.schedulerservice.configuration.ImprovedMySQLDialect
       hibernate:
+        enable_lazy_load_no_trans: true
         dialect: com.uns.ac.rs.schedulerservice.configuration.ImprovedMySQLDialect
           #storage_engine: innodb
         connection:
@@ -37,6 +38,9 @@ spring:
       enabled: false
   application:
     name: scheduler-service
+#  main:
+#    web-application-type: reactive
+
 
 springfox:
   documentation:
@@ -51,7 +55,7 @@ stripe:
 feign-services:
   user-service:
     name: user-service
-    url: http://localhost:8081/api/user-service
+    url: http://localhost:9001/api/user-service
     path: /user
 
 feign:
@@ -81,3 +85,7 @@ swagger:
     contactEmail: miljan.puletic@email.com
     license: License of API
     licenseUrl: \#
+
+jwt:
+  expiration: 7200000
+  secret: tennis-scheduler

@@ -13,6 +13,7 @@ public class ReservationRequest {
     private Integer user;
     private Integer courtId;
     private String paymentIntent;
+    private long total;
     private PaymentMethod paymentMethod;
     private List<ReservationDto> reservationDtos;
 }

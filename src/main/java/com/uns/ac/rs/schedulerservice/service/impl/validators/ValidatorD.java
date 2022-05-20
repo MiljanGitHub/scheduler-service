@@ -41,14 +41,18 @@ public class ValidatorD extends Validator{
 
         String paymentMethod = reservationRequest.getPaymentMethod().toString();
 
-        long total = calculatePayment(reservationRequest);
+        long calculatedTotal = calculatePayment(reservationRequest);
+
+        if (calculatedTotal != reservationRequest.getTotal()){
+            return BookingDto.builder().hasErrorMessage(false).successMessage("Please reload your page. New court prices are in effective.").build();
+        }
 
         if (paymentMethod.equals("CARD")){
 
             Payment newPayment = paymentRepository.save(Payment.builder()
                     .userId(reservationRequest.getUser())
                     .paid(false)
-                    .payment(total)
+                    .payment(calculatedTotal)
                     .paymentMethod(PaymentMethod.CARD)
                     .paymentIntent(reservationRequest.getPaymentIntent())
                     .stripConfirmed(false)
@@ -71,7 +75,7 @@ public class ValidatorD extends Validator{
             Payment newPayment = paymentRepository.save(Payment.builder()
                             .userId(reservationRequest.getUser())
                             .paid(false)
-                            .payment(total)
+                            .payment(calculatedTotal)
                             .paymentIntent(null)
                             .stripConfirmed(false)
                             .paymentMethod(PaymentMethod.CASH).build());
@@ -92,7 +96,10 @@ public class ValidatorD extends Validator{
     }
 
     private long calculatePayment(ReservationRequest reservationRequest){
-        return reservationRequest.getReservationDtos().size() == 1 ? 5 : (reservationRequest.getReservationDtos().size() - 1) * 10L + 5;
+        Integer courtId = reservationRequest.getCourtId();
+        Court c = courtRepository.getById(courtId);
+
+        return (long) reservationRequest.getReservationDtos().size() * c.getPrice();
     }
 
     private String initIntent(Long amount){
