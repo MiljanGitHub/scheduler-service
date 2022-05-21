@@ -27,7 +27,6 @@ public class SchedulerController {
 
     private final SchedulerService schedulerService;
 
-    //@Authorizable(roles = {"USER", "ADMIN"})
     @GetMapping("/courts-info")
     @ApiOperation(value = "Finds Court Info data", notes = "Returns Court Info data", response = ResponseEntity.class)
     @ApiResponses(
